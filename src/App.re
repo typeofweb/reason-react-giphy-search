@@ -1,10 +1,38 @@
-let component = ReasonReact.statelessComponent("App");
+open Belt;
+
+type action =
+  | SearchTextChange(string);
+
+type state = {currentText: string};
+
+let initialState = () => {currentText: ""};
+
+let onInputChange = ({ReasonReact.send}, e) =>
+  send(
+    SearchTextChange(
+      ReactDOMRe.domElementToObj(ReactEventRe.Form.target(e))##value,
+    ),
+  );
+
+let reducer = (action: action, _state: state) =>
+  switch (action) {
+  | SearchTextChange(text) => ReasonReact.Update({currentText: text})
+  };
+
+let component = ReasonReact.reducerComponent("App");
 
 let make = _children => {
   ...component,
-  render: _self =>
+  reducer,
+  initialState,
+  render: self =>
     <div>
-      <Component1 message="Hello!" />
-      <Component2 greeting="Hello!" />
+      <input
+        placeholder={j|Search gifs…|j}
+        value=self.state.currentText
+        onChange=(onInputChange(self))
+        autoFocus=true
+      />
+      <GiphsListContainer text=self.state.currentText />
     </div>,
 };
