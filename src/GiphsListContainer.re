@@ -1,5 +1,3 @@
-open Belt;
-
 [@bs.val] [@bs.scope "console"] external consoleError : 'a => unit = "error";
 
 type action =
