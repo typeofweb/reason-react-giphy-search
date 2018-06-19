@@ -1,5 +1,3 @@
-open Belt;
-
 type action =
   | SearchTextChange(string);
 
@@ -7,12 +5,10 @@ type state = {currentText: string};
 
 let initialState = () => {currentText: ""};
 
-let onInputChange = ({ReasonReact.send}, e) =>
-  send(
-    SearchTextChange(
-      ReactDOMRe.domElementToObj(ReactEventRe.Form.target(e))##value,
-    ),
-  );
+let onInputChange = (e, {ReasonReact.send}) => {
+  let target = e |> ReactEventRe.Form.target |> ReactDOMRe.domElementToObj;
+  send(SearchTextChange(target##value));
+};
 
 let reducer = (action: action, _state: state) =>
   switch (action) {
@@ -30,7 +26,7 @@ let make = _children => {
       <input
         placeholder={j|Search gifs…|j}
         value=self.state.currentText
-        onChange=(onInputChange(self))
+        onChange=(self.handle(onInputChange))
         autoFocus=true
       />
       <GiphsListContainer text=self.state.currentText />

@@ -54,7 +54,6 @@ let make = (~text: string, _children) => {
   didMount: ({ReasonReact.send}) => {
     Js.log(text);
     send(FetchingStarted(text));
-    ReasonReact.NoUpdate;
   },
   didUpdate: ({oldSelf, newSelf}) => {
     if (oldSelf.state.text !== newSelf.state.text) {
@@ -67,7 +66,7 @@ let make = (~text: string, _children) => {
     | (Some(gifs), false) => <GifsList gifs />
     | _ =>
       <div className="loading-indicator">
-        ({j|Ładowanie…|j} |> ReasonReact.stringToElement)
+        ({j|Ładowanie…|j} |> ReasonReact.string)
       </div>
     },
 };

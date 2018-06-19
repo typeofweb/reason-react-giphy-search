@@ -16,7 +16,7 @@ let renderGifs = (gifs: Gifs.gifs) =>
          />
        </li>
      )
-  |> ReasonReact.arrayToElement;
+  |> ReasonReact.array;
 
 let make = (~gifs, _children) => {
   ...component,
